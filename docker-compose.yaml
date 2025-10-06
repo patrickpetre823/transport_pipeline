@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+
+  webserver:
+    image: apache/airflow:2.9.3
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./data:/opt/airflow/data
+      - ./src:/opt/airflow/src
+    command: webserver
+
+  scheduler:
+    image: apache/airflow:2.9.3
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./data:/opt/airflow/data
+      - ./src:/opt/airflow/src
+    command: scheduler
